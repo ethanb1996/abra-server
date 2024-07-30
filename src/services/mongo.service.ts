@@ -1,6 +1,6 @@
 import { MongoClient, Document,ServerApiVersion, FindCursor } from "mongodb";
 
-import { CrudInterface } from "../../interfaces/crud.interface";
+import { CrudInterface } from "../interfaces/crud.interface";
 
 const MONGO_DB_PASSWORD="";
 const MONGO_USER=""
