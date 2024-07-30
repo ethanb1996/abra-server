@@ -1,5 +1,5 @@
 export type Place = {
-    id: number,
+    id: string,
     name: string,
     type: string,
     creationDate: Date,

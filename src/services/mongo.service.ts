@@ -36,7 +36,7 @@ export class MongoDbService<T> implements CrudInterface<T>{
             return p
         } catch (err) {
             console.log(err.stack);
-            return err.stack
+            throw(new Error(err.stack))
         }
         finally {
             await this.client.close();
@@ -55,7 +55,7 @@ export class MongoDbService<T> implements CrudInterface<T>{
             return values
         } catch (err) {
             console.log(err.stack);
-            return err.stack
+            throw(new Error(err.stack))
         }
         finally {
             await this.client.close();

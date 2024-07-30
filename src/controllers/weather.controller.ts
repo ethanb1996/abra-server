@@ -1,21 +1,39 @@
+import { randomUUID } from "crypto";
 import { Place } from "../types/place";
+import { Request, Response } from 'express';
+import { MongoDbService } from "../services/mongo.service";
 
-
-
-const createPlace = (req: Request, res: Response) => {
-// TODO - connect to mongodb by the mongoService
-// TODO - call the function that add a place to the mongodb
-// TODO - close the connection
-
+const createPlace = async (req: Request, res: Response):Promise<void> => {
+    try {
+        const { name, type, address } = (req.body! as any).place;
+        const place: Place = {
+            id: randomUUID() as string,
+            name: name,
+            type: type,
+            address: address,
+            creationDate: new Date()
+        }
+        const mongoDbService = new MongoDbService<Place>(process.env.COLLECTION_NAME!, process.env.CLUSTER_NAME!)
+        const document = await mongoDbService.insert(place)
+        res.json(document);
+    } catch (err) {
+        res.status(500).send('An error occured', err);
+    }
 };
 
-const getPlace = (req: Request, res: Response): Place  | void => {
-    // TODO - connect to mongodb by the mongoService
-    // TODO - call the function that get the place to the mongodb
-    // TODO - close the connection
-    // TODO - return the place
-
+const getPlace = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const id = req.params.id;
+        const filter = {
+            id: id
+        }
+        const mongoDbService = new MongoDbService<Place>(process.env.COLLECTION_NAME!, process.env.CLUSTER_NAME!)
+        const rows: Place[] = await mongoDbService.readRows(filter)
+        res.json(rows)
+    } catch (err) {
+        res.status(500).send('An error occured', []);
+    }
 }
 
 
-export {getPlace, createPlace}
+export { getPlace, createPlace }
