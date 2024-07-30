@@ -2,6 +2,7 @@ import { MongoClient, Document,ServerApiVersion, FindCursor } from "mongodb";
 
 import { CrudInterface } from "../../interfaces/crud.interface";
 
+const MONGO_DB_PASSWORD="Eee:2_#BbvBN2&t";
 
 export class MongoDbService<T> implements CrudInterface<T>{
 
@@ -9,7 +10,8 @@ export class MongoDbService<T> implements CrudInterface<T>{
     private readonly collectionName: string;
     private readonly clusterName: string;
     constructor(collectionName: string, clusterName: string) {
-        const uri = `mongodb+srv://bonanethan:<${process.env.MONGO_DB_PASSWORD}>@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+        // const uri = `mongodb+srv://bonanethan:<${process.env.MONGO_DB_PASSWORD}>@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+        const uri = `mongodb+srv://bonanethan:<${MONGO_DB_PASSWORD}>@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
         this.client = new MongoClient(uri, {
             serverApi: {
                 version: ServerApiVersion.v1,
@@ -25,16 +27,16 @@ export class MongoDbService<T> implements CrudInterface<T>{
         return this.client
     }
 
-    async insert(row: T): Promise<Document> {
+    async insert(row: T): Promise<void> {
         try {
             await this.client.connect();
             // Get the database and collection on which to run the operation
             const db = this.client.db(this.clusterName);
             const collection = db.collection(this.collectionName);
             
-            const p = await collection.insertOne(row as Document)
-            return p
-        } catch (err) {
+            await collection.insertOne(row as Document)
+            
+        } catch (err:any) {
             console.log(err.stack);
             throw(new Error(err.stack))
         }
@@ -53,7 +55,7 @@ export class MongoDbService<T> implements CrudInterface<T>{
             const cursor:FindCursor = await collection.find(filter)
             const values: T[] = await cursor.toArray() as T[]
             return values
-        } catch (err) {
+        } catch (err:any) {
             console.log(err.stack);
             throw(new Error(err.stack))
         }
