@@ -2,8 +2,8 @@ import { MongoClient, Document,ServerApiVersion, FindCursor } from "mongodb";
 
 import { CrudInterface } from "../../interfaces/crud.interface";
 
-const MONGO_DB_PASSWORD="jBmTNABd9bDaDplI";
-const MONGO_USER="user1"
+const MONGO_DB_PASSWORD="";
+const MONGO_USER=""
 
 export class MongoDbService<T> implements CrudInterface<T>{
 
