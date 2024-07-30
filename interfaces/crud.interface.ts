@@ -1,4 +1,4 @@
 export interface CrudInterface<T> {
     insert(row: T),
-    readAllRows()
+    readRows(filter:any)
 }
