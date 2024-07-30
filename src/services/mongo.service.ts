@@ -2,7 +2,8 @@ import { MongoClient, Document,ServerApiVersion, FindCursor } from "mongodb";
 
 import { CrudInterface } from "../../interfaces/crud.interface";
 
-const MONGO_DB_PASSWORD="Eee:2_#BbvBN2&t";
+const MONGO_DB_PASSWORD="jBmTNABd9bDaDplI";
+const MONGO_USER="user1"
 
 export class MongoDbService<T> implements CrudInterface<T>{
 
@@ -11,7 +12,7 @@ export class MongoDbService<T> implements CrudInterface<T>{
     private readonly clusterName: string;
     constructor(collectionName: string, clusterName: string) {
         // const uri = `mongodb+srv://bonanethan:<${process.env.MONGO_DB_PASSWORD}>@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-        const uri = `mongodb+srv://bonanethan:<${MONGO_DB_PASSWORD}>@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+        const uri = `mongodb+srv://${MONGO_USER}:${MONGO_DB_PASSWORD}@cluster0.i3f9bpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
         this.client = new MongoClient(uri, {
             serverApi: {
                 version: ServerApiVersion.v1,
@@ -45,7 +46,7 @@ export class MongoDbService<T> implements CrudInterface<T>{
         }
     }
     
-    async readRows(filter:{[key:string]:string}): Promise<T[]>{
+    async readRows(filter:{[key:string]:any}): Promise<T[]>{
         try {
             await this.client.connect();
             // Get the database and collection on which to run the operation

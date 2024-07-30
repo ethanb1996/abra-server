@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb"
+
 export type Place = {
-    id: string,
+    _id: ObjectId,
     name: string,
     type: string,
     creationDate: Date,
